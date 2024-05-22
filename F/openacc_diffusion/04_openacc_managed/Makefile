@@ -1,7 +1,7 @@
 F90  = nvfortran
 RM  = rm -f
 
-FFLAGS    = -O3 -mp -acc -ta=tesla,cc80,managed -Minfo=accel
+FFLAGS    = -O3 -mp -acc -gpu=cc80,managed -Minfo=accel
 LDFLAGS   = 
 
 SRCS   = misc.f90 diffusion.f90 main.f90

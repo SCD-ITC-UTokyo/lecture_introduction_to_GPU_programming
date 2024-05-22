@@ -5,7 +5,7 @@ GCC  = gcc
 RM  = rm -f
 MAKEDEPEND = makedepend
 
-CFLAGS    = -O3 -acc -Minfo=accel  -ta=tesla,cc80,managed
+CFLAGS    = -O3 -acc -Minfo=accel  -gpu=cc80,managed
 GFLAGS    = -Wall -O3 
 CXXFLAGS  = $(CFLAGS)
 LDFLAGS   = 

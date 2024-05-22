@@ -68,7 +68,7 @@ make
 ## openacc_basic_managed (C, Fortran)
 
 * GPUのUnified memory (managed memory) 機能を利用する場合のOpenACCの実装方法を学びましょう。
-  * -ta=tesla,cc80,**managed** をコンパイラオプションに追加することにより有効になります。
+  * -gpu=cc80,**managed** をコンパイラオプションに追加することにより有効になります。
 * Data指示文で行っていたデータ管理をシステム側に任せられるので便利です。
 
 ```bash
