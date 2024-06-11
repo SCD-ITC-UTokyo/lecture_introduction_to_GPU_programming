@@ -60,7 +60,7 @@ program main
     
   call init_cpu(nx, ny, a)
 
-  !$acc data copyin(a) create(b,c)
+  !$acc data copyin(a) create(b) copyout(c)
   !$acc kernels copyout(b)
   !$acc loop independent
   do j = 1,ny
@@ -78,18 +78,15 @@ program main
   do icnt = 1,nt
      call calc(nx, ny, a, b, c)
   end do
+  
+  !$acc end data
 
   sum = 0
-  !$acc kernels copyin(c)
-  !$acc loop reduction(+:sum)
   do j = 1,ny
-     !$acc loop reduction(+:sum)
      do i = 1,nx
         sum = sum + c(i,j)
      end do
   end do
-  !$acc end kernels
-  !$acc end data
 
   !**** End ****!
     

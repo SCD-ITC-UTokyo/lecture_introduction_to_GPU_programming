@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
     }
 
     double sum = 0;
-#pragma acc kernels copyin(c[0:n])
     for (unsigned int i=0; i<n; i++) {
 	sum += c[i];
     }

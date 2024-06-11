@@ -75,13 +75,11 @@ program main
   end do
 
   sum = 0
-  !$acc kernels copyin(c)
   do j = 1,ny
      do i = 1,nx
         sum = sum + c(i,j)
      end do
   end do
-  !$acc end kernels
 
   !**** End ****!
     

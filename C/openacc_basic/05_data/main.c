@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     init_cpu(n, a);
 
     double sum = 0;
-#pragma acc data copyin(a[0:n]) create(b[0:n],c[0:n])
+#pragma acc data copyin(a[0:n]) create(b[0:n]) copyout(c[0:n])
     {
 #pragma acc kernels copyout(b[0:n])
 #pragma acc loop independent
@@ -58,13 +58,11 @@ int main(int argc, char *argv[])
 	for (unsigned int icnt=0; icnt<nt; icnt++) {
 	    calc(nx, ny, a, b, c);
 	}
+    }
 
-#pragma acc kernels copyin(c[0:n])
-#pragma acc loop reduction(+:sum)
 	for (unsigned int i=0; i<n; i++) {
 	    sum += c[i];
 	}
-    }
 
     /**** End ****/
     

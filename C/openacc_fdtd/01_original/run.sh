@@ -8,7 +8,7 @@
 
 
 
-module load nvidia cuda ompi-cuda
+module load nvidia nvmpi cuda
 
 mkdir -p sim_run
 cd sim_run
