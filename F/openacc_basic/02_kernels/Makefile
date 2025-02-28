@@ -1,7 +1,7 @@
 F90  = nvfortran
 RM  = rm -f
 
-FFLAGS    = -O3 -mp -acc -gpu=cc80 -Minfo=accel
+FFLAGS    = -O3 -mp -acc -gpu=cc80,managed -Minfo=accel
 LDFLAGS   = 
 
 SRCS   = main.f90

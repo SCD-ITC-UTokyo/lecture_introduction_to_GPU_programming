@@ -5,13 +5,15 @@ contains
 
   subroutine calc(nx, ny, a, b, c)
     implicit none
-    integer, intent(in) :: nx, ny
+    integer, intent(in) :: nx,ny
     real(4), intent(in)  :: a(:,:), b(:,:)
     real(4), intent(out) :: c(:,:)
     integer :: i,j
 
     !$acc kernels
+    !$acc loop independent
     do j = 1,ny
+       !$acc loop independent
        do i = 1,nx
           c(i,j) = c(i,j) + a(i,j) + b(i,j)
        end do
@@ -22,7 +24,7 @@ contains
 
   subroutine init_cpu(nx, ny, a)
     implicit none
-    integer, intent(in) :: nx, ny
+    integer, intent(in) :: nx,ny
     real(4), intent(out)  :: a(:,:)
     integer :: i,j
 
@@ -44,7 +46,7 @@ program main
   integer :: nt = 1000
   integer :: nx = 4096
   integer :: ny = 4096
-  real(4),allocatable :: a(:,:), b(:,:), c(:,:)
+  real(4), allocatable :: a(:,:), b(:,:), c(:,:)
   real(4) :: b0
   real(8) :: t_s, t_e, sum
   integer :: i,j,icnt
@@ -60,7 +62,9 @@ program main
   call init_cpu(nx, ny, a)
 
   !$acc kernels
+  !$acc loop independent
   do j = 1,ny
+     !$acc loop independent
      do i = 1,nx
         b(i,j) = b0
      end do
@@ -77,7 +81,9 @@ program main
 
   sum = 0
   !$acc kernels
+  !$acc loop reduction(+:sum)
   do j = 1,ny
+     !$acc loop reduction(+:sum)
      do i = 1,nx
         sum = sum + c(i,j)
      end do

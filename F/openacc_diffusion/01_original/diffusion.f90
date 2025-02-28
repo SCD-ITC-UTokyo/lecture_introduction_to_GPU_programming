@@ -3,13 +3,13 @@ module diffusion
 
 contains
 
-  double precision function diffusion3d(nx, ny, nz, dx, dy, dz, dt, kappa, f, fn)
+  real(8) function diffusion3d(nx, ny, nz, dx, dy, dz, dt, kappa, f, fn)
     
-    integer,intent(in) :: nx, ny, nz
-    real(KIND=4),intent(in) :: dx, dy, dz, dt, kappa
-    real(KIND=4),intent(in),dimension(:,:,:) :: f
-    real(KIND=4),intent(out),dimension(:,:,:) :: fn
-    real(KIND=4) :: ce,cw,cn,cs,ct,cb,cc
+    integer,intent(in)  :: nx, ny, nz
+    real(4),intent(in)  :: dx, dy, dz, dt, kappa
+    real(4),intent(in)  :: f(:,:,:)
+    real(4),intent(out) :: fn(:,:,:)
+    real(4) :: ce,cw,cn,cs,ct,cb,cc
     integer :: w,e,n,s,b,t
     integer :: i,j,k
 
@@ -48,10 +48,10 @@ contains
 
   subroutine init(nx, ny, nz, dx, dy, dz, f)
     
-    integer,intent(in) :: nx, ny, nz
-    real(KIND=4),intent(in) :: dx, dy, dz
-    real(KIND=4),intent(out),dimension(:,:,:) :: f
-    real(KIND=4) :: kx,ky,kz,x,y,z,pi
+    integer,intent(in)  :: nx, ny, nz
+    real(4),intent(in)  :: dx, dy, dz
+    real(4),intent(out) :: f(:,:,:)
+    real(4) :: kx,ky,kz,x,y,z,pi
     integer :: i,j,k
 
     pi = acos(-1.0)
@@ -76,13 +76,13 @@ contains
   end subroutine init
 
 
-  double precision function accuracy(time, nx, ny, nz, dx, dy, dz, kappa, f)
-    double precision,intent(out) :: time
-    integer,intent(in) :: nx, ny, nz
-    real(KIND=4),intent(in) :: dx, dy, dz, kappa
-    real(KIND=4),intent(out),dimension(:,:,:) :: f
-    real(KIND=4) :: kx,ky,kz,ax,ay,az,x,y,z,pi,f0
-    double precision :: ferr
+  real(8) function accuracy(time, nx, ny, nz, dx, dy, dz, kappa, f)
+    real(8), intent(in)  :: time
+    integer, intent(in)  :: nx, ny, nz
+    real(4), intent(in)  :: dx, dy, dz, kappa
+    real(4), intent(out) :: f(:,:,:)
+    real(4) :: kx,ky,kz,ax,ay,az,x,y,z,pi,f0
+    real(8) :: ferr
     integer :: i,j,k
 
     pi = acos(-1.0)

@@ -1,4 +1,4 @@
-module calc_mod
+module foo
   implicit none
   
 contains
@@ -6,8 +6,8 @@ contains
   subroutine calc(nx, ny, a, b, c)
     implicit none
     integer,intent(in) :: nx,ny
-    real(KIND=4),dimension(:,:),intent(in)  :: a,b
-    real(KIND=4),dimension(:,:),intent(out) :: c
+    real(4), intent(in)  :: a(:,:), b(:,:)
+    real(4), intent(out) :: c(:,:)
     integer :: i,j
 
     do j = 1,ny
@@ -21,7 +21,7 @@ contains
   subroutine init_cpu(nx, ny, a)
     implicit none
     integer,intent(in) :: nx,ny
-    real(KIND=4),dimension(:,:),intent(out)  :: a
+    real(4),intent(out)  :: a(:,:)
     integer :: i,j
 
     do j = 1, ny
@@ -31,19 +31,20 @@ contains
     end do
   end subroutine init_cpu
 
-end module calc_mod
+end module foo
 
 
 program main
-  use calc_mod
+  use foo
+  use omp_lib
   implicit none
 
   integer :: nt = 1000
   integer :: nx = 4096
   integer :: ny = 4096
-  real(KIND=4),allocatable,dimension(:,:) :: a,b,c
-  real(KIND=4) :: b0
-  real(KIND=8) :: t_s, t_e, sum, omp_get_wtime
+  real(4),allocatable :: a(:,:), b(:,:), c(:,:)
+  real(4) :: b0
+  real(8) :: t_s, t_e, sum
   integer :: i,j,icnt
   
   allocate(a(nx,ny),b(nx,ny),c(nx,ny))
