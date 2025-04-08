@@ -30,8 +30,7 @@ int main(int argc, char *argv[])
 
     const float b0 = 2.0;
 
-    struct timeval tv0;
-    gettimeofday(&tv0, NULL);
+    struct timeval tv0, tv1;
 
     /**** Begin ****/
     
@@ -43,6 +42,8 @@ int main(int argc, char *argv[])
     for (unsigned int i=0; i<n; i++) {
         c[i] = 0.0;
     }
+    
+    gettimeofday(&tv0, NULL);
             
     for (unsigned int icnt=0; icnt<nt; icnt++) {
         calc(nx, ny, a, b, c);
@@ -55,7 +56,6 @@ int main(int argc, char *argv[])
 
     /**** End ****/
     
-    struct timeval tv1;
     gettimeofday(&tv1, NULL);
     
     fprintf(stdout, "mean = %5.2f\n", sum / n);

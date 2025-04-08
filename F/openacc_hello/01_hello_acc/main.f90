@@ -1,8 +1,8 @@
 program main
   implicit none
   
-  integer,parameter :: n = 1000
-  real(4),allocatable,dimension :: a(:), b(:)
+  integer, parameter :: n = 1000
+  real(4), allocatable :: a(:), b(:)
   real(4) :: c
   integer :: i
   real(8) :: sum

@@ -5,8 +5,8 @@ GCC  = gcc
 RM  = rm -f
 MAKEDEPEND = makedepend
 
-CFLAGS    = -O3 -acc -Minfo=accel -gpu=cc80
-GFLAGS    = -Wall -O3 -std=c99
+CFLAGS    = -fast -acc -Minfo=accel -gpu=cc90,mem:unified:nomanagedalloc
+GFLAGS    = -Wall -std=c99
 CXXFLAGS  = $(CFLAGS)
 LDFLAGS   = 
 

@@ -26,7 +26,6 @@ void calc_ex_ey(const struct Range *whole, const struct Range *inside,
         for (int i=0; i<nx; i++) {
             const int ix = (j+mgn[1])*lnx + i+mgn[0];
             const int jm = ix - lnx;
-            //ex[ix] += cexly[ix]*(hz[ix]-hz[jm]) - cexlz[ix]*(hy[ix]-hy[km]);
             ex[ix] += cexly[ix]*(hz[ix]-hz[jm]);
         }
     }
@@ -35,7 +34,6 @@ void calc_ex_ey(const struct Range *whole, const struct Range *inside,
         for (int i=0; i<nx+1; i++) {
             const int ix = (j+mgn[1])*lnx + i+mgn[0];
             const int im = ix - 1;
-            //ey[ix] += ceylz[ix]*(hx[ix]-hx[km]) - ceylx[ix]*(hz[ix]-hz[im]);
             ey[ix] += - ceylx[ix]*(hz[ix]-hz[im]);
         }
     }
@@ -85,7 +83,7 @@ void pml_boundary_ex(const struct Range *whole, const struct Range *inside,
                 const int ix  = jj*whole->length[0] + ii;
                 const int jm  = ix - whole->length[0];
                 exy[ix] = cexy[jj]*exy[ix] + rer_ex[ix]*cexyl[jj]*(hz[ix] - hz[jm]);
-                ex [ix]  = exy[ix];// + exz[ix];
+                ex [ix]  = exy[ix];
             }
         }
         
@@ -119,7 +117,7 @@ void pml_boundary_ey(const struct Range *whole, const struct Range *inside,
                 const int ix  = jj*whole->length[0] + ii;
                 const int im  = ix - 1;
                 eyx[ix] = ceyx[ii]*eyx[ix] - rer_ey[ix]*ceyxl[ii]*(hz[ix]-hz[im]);
-                ey [ix]  = eyx[ix];// + eyz[ixp];
+                ey [ix]  = eyx[ix];
             }
         }
         

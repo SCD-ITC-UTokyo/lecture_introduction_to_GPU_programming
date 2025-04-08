@@ -3,21 +3,21 @@ program main
   use misc
   implicit none
 
-  integer,parameter :: nx = 128
-  integer,parameter :: ny = nx
-  integer,parameter :: nz = nx
-  integer,parameter :: nt = 100000
-  real(KIND=4),parameter :: lx = 1.0
-  real(KIND=4),parameter :: ly = 1.0
-  real(KIND=4),parameter :: lz = 1.0
-  real(KIND=4),parameter :: dx = lx/real(nx)
-  real(KIND=4),parameter :: dy = lx/real(ny)
-  real(KIND=4),parameter :: dz = lx/real(nz)
-  real(KIND=4),parameter :: kappa = 0.1
-  real(KIND=4),parameter :: dt = 0.1*min(min(dx*dx, dy*dy), dz*dz)/kappa
+  integer, parameter :: nx = 128
+  integer, parameter :: ny = nx
+  integer, parameter :: nz = nx
+  integer, parameter :: nt = 100000
+  real(4), parameter :: lx = 1.0
+  real(4), parameter :: ly = 1.0
+  real(4), parameter :: lz = 1.0
+  real(4), parameter :: dx = lx/real(nx)
+  real(4), parameter :: dy = lx/real(ny)
+  real(4), parameter :: dz = lx/real(nz)
+  real(4), parameter :: kappa = 0.1
+  real(4), parameter :: dt = 0.1*min(min(dx*dx, dy*dy), dz*dz)/kappa
   integer :: icnt
-  double precision :: time, flop, elapsed_time, ferr
-  real(KIND=4),pointer,dimension(:,:,:) :: f,fn
+  real(8) :: time, flop, elapsed_time, ferr
+  real(4), pointer :: f(:,:,:), fn(:,:,:)
 
   time = 0.d0
   flop = 0.d0 
@@ -25,10 +25,9 @@ program main
 
   allocate(f(nx,ny,nz))
   allocate(fn(nx,ny,nz))
-
+  
   call init(nx, ny, nz, dx, dy, dz, f);
   
-!$acc data copy(f) create(fn)
   call start_timer()
 
   do icnt = 0, nt-1
@@ -43,7 +42,6 @@ program main
   end do
     
   elapsed_time = get_elapsed_time()
-!$acc end data
     
   write(*, "(A7,F8.3,A6)"), "Time = ",elapsed_time," [sec]"
   write(*, "(A13,F7.2,A9)"), "Performance= ",flop/elapsed_time*1.0e-09," [GFlops]"

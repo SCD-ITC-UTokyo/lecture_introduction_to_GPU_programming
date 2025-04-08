@@ -16,7 +16,7 @@ double diffusion3d(int nx, int ny, int nz, float dx, float dy, float dz, float d
 
     const float cc = 1.0 - (ce + cw + cn + cs + ct + cb);
 
-#pragma acc kernels present(f, fn)
+#pragma acc kernels
 #pragma acc loop independent    
     for(int k = 0; k < nz; k++) {
 #pragma acc loop independent        
@@ -46,8 +46,12 @@ void init(int nx, int ny, int nz, float dx, float dy, float dz, float *f)
     const float ky = kx;
     const float kz = kx;
 
+#pragma acc kernels
+#pragma acc loop independent
     for(int k=0; k < nz; k++) {
+#pragma acc loop independent
         for(int j=0; j < ny; j++) {
+#pragma acc loop independent
             for(int i=0; i < nx; i++) {
                 const int ix = nx*ny*k + nx*j + i;
                 const float x = dx*((float)i + 0.5);
@@ -73,8 +77,12 @@ double accuracy(double time, int nx, int ny, int nz, float dx, float dy, float d
 
     double ferr = 0.0;
 
+#pragma acc kernels
+#pragma acc loop reduction(+:ferr)
     for(int k=0; k < nz; k++) {
+#pragma acc loop reduction(+:ferr)
         for(int j=0; j < ny; j++) {
+#pragma acc loop reduction(+:ferr)
             for(int i=0; i < nx; i++) {
                 const int ix = nx*ny*k + nx*j + i;
                 const float x = dx*((float)i + 0.5);

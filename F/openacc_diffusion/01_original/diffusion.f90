@@ -5,10 +5,10 @@ contains
 
   real(8) function diffusion3d(nx, ny, nz, dx, dy, dz, dt, kappa, f, fn)
     
-    integer,intent(in)  :: nx, ny, nz
-    real(4),intent(in)  :: dx, dy, dz, dt, kappa
-    real(4),intent(in)  :: f(:,:,:)
-    real(4),intent(out) :: fn(:,:,:)
+    integer, intent(in)  :: nx, ny, nz
+    real(4), intent(in)  :: dx, dy, dz, dt, kappa
+    real(4), intent(in)  :: f(:,:,:)
+    real(4), intent(out) :: fn(:,:,:)
     real(4) :: ce,cw,cn,cs,ct,cb,cc
     integer :: w,e,n,s,b,t
     integer :: i,j,k
@@ -48,9 +48,9 @@ contains
 
   subroutine init(nx, ny, nz, dx, dy, dz, f)
     
-    integer,intent(in)  :: nx, ny, nz
-    real(4),intent(in)  :: dx, dy, dz
-    real(4),intent(out) :: f(:,:,:)
+    integer, intent(in)  :: nx, ny, nz
+    real(4), intent(in)  :: dx, dy, dz
+    real(4), intent(out) :: f(:,:,:)
     real(4) :: kx,ky,kz,x,y,z,pi
     integer :: i,j,k
 

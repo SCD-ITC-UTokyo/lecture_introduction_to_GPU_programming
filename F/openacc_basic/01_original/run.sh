@@ -1,12 +1,11 @@
 #!/bin/bash
-#PJM -L rscgrp=lecture-a
-#PJM -L gpu=1
-#PJM -L elapse=00:10:00
-#PJM -g gt00
+#PBS -q lecture-g
+#PBS -l select=1
+#PBS -l walltime=00:01:00
+#PBS -W group_list=gt00
+#PBS -j oe
 
-
-
-
+cd $PBS_O_WORKDIR
 module load nvidia 
 
 ./run

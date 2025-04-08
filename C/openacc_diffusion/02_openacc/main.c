@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     const int nx = 128;
     const int ny = nx;
-    const int nz = ny;
+    const int nz = nx;
     const int n  = nx*ny*nz;
 
     const float lx = 1.0;
@@ -35,22 +35,19 @@ int main(int argc, char *argv[])
 
     init(nx, ny, nz, dx, dy, dz, f);
 
-#pragma acc data copy(f[0:n]) create(fn[0:n])
-    {
-        start_timer();
+    start_timer();
     
-        for (; icnt<nt && time + 0.5*dt < 0.1; icnt++) {
-	  if (icnt % 100 == 0) fprintf(stdout, "time(%4d) = %7.5f\n", icnt, time);
+    for (; icnt<nt && time + 0.5*dt < 0.1; icnt++) {
+	   if (icnt % 100 == 0) fprintf(stdout, "time(%4d) = %7.5f\n", icnt, time);
             
-            flop += diffusion3d(nx, ny, nz, dx, dy, dz, dt, kappa, f, fn);
+       flop += diffusion3d(nx, ny, nz, dx, dy, dz, dt, kappa, f, fn);
             
-            swap(&f, &fn);
+       swap(&f, &fn);
 
-            time += dt;
-        }
-    
-        elapsed_time = get_elapsed_time();
+       time += dt;
     }
+    
+    elapsed_time = get_elapsed_time();
     
     fprintf(stdout, "Time = %8.3f [sec]\n", elapsed_time);
     fprintf(stdout, "Performance= %7.2f [GFlops]\n",flop/elapsed_time*1.0e-09);

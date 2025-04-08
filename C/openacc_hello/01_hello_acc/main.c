@@ -10,11 +10,13 @@ int main()
     float  c = 2.0;
 
 #pragma acc kernels
+#pragma acc loop independent
     for (int i=0; i<n; i++) {
         a[i] = 10.0;
     }
 
 #pragma acc kernels 
+#pragma acc loop independent
     for (int i=0; i<n; i++) {
         b[i] = a[i] + c;
     }

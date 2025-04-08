@@ -5,7 +5,7 @@ contains
 
   subroutine calc(nx, ny, a, b, c)
     implicit none
-    integer, intent(in) :: nx,ny
+    integer, intent(in)  :: nx,ny
     real(4), intent(in)  :: a(:,:), b(:,:)
     real(4), intent(out) :: c(:,:)
     integer :: i,j
@@ -24,8 +24,8 @@ contains
 
   subroutine init_cpu(nx, ny, a)
     implicit none
-    integer, intent(in) :: nx,ny
-    real(4), intent(out)  :: a(:,:)
+    integer, intent(in)  :: nx,ny
+    real(4), intent(out) :: a(:,:)
     integer :: i,j
 
     do j = 1, ny
@@ -51,11 +51,9 @@ program main
   real(8) :: t_s, t_e, sum
   integer :: i,j,icnt
   
-  allocate(a(nx,ny),b(nx,ny),c(nx,ny))
+  allocate(a(nx,ny), b(nx,ny), c(nx,ny))
 
   b0 = 2.0
-
-  t_s = omp_get_wtime()
 
   !**** Begin ****!
     
@@ -74,6 +72,8 @@ program main
   !$acc kernels
   c(:,:) = 0.0
   !$acc end kernels
+
+  t_s = omp_get_wtime()
 
   do icnt = 1,nt
      call calc(nx, ny, a, b, c)

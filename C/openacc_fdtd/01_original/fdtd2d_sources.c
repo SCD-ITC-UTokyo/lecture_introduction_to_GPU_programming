@@ -28,9 +28,6 @@ void plane_wave_incidence(const struct Range *whole, const struct Range *inside,
 
     const FLOAT e = a*sin(2.0*pi*freq*time);
 
-    //printf("e = %8.3f, freq*time = %8.3f\n", e, freq*time);
-
-    
     
     if (jpos < inside->begin[1] || jpos >= inside_end[1]) {
         return;

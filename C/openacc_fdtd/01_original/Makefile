@@ -1,16 +1,14 @@
 
 CC   = mpicc
-CXX  = mpic++
 GCC  = gcc
 RM  = rm -f
 MAKEDEPEND = makedepend
 
-CFLAGS    = -O3 
-GFLAGS    = -Wall -O3 
-CXXFLAGS  = $(CFLAGS)
+CFLAGS    = -fast --diag_suppress declared_but_not_referenced
+GFLAGS    = -Wall 
 LDFLAGS   = 
 
-SRCS    = main.c setup.c config.c fdtd2d.c fdtd2d_sources.c output.cc bitmap.cc
+SRCS    = main.c setup.c config.c fdtd2d.c fdtd2d_sources.c
 TARGET = run
 DISTTARGET = $(TARGET)_1.0.0
 
@@ -26,7 +24,7 @@ DEPENDENCIES = $(subst .o,.d,$(OBJS))
 all : $(TARGET)
 
 $(TARGET) : $(OBJS)
-	$(CXX) $(CXXFLAGS) $(TARGET_ARCH) $(OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(TARGET_ARCH) $(OBJS) -o $@ $(LDFLAGS)
 
 %.o : %.c
 	$(call make-depend,$<,$@,$(subst .o,.d,$@))
@@ -34,11 +32,11 @@ $(TARGET) : $(OBJS)
 
 %.o : %.cc
 	$(call make-depend,$<,$@,$(subst .o,.d,$@))
-	$(CXX) $(CXXFLAGS) $(TARGET_ARCH) -c $<
+	$(CC) $(CFLAGS) $(TARGET_ARCH) -c $<
 
 %.o : %.cpp
 	$(call make-depend,$<,$@,$(subst .o,.d,$@))
-	$(CXX) $(CXXFLAGS) $(TARGET_ARCH) -c $<
+	$(CC) $(CFLAGS) $(TARGET_ARCH) -c $<
 
 .PHONY: dist
 dist :

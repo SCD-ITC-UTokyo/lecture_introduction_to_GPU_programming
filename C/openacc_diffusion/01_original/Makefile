@@ -5,8 +5,8 @@ GCC  = gcc
 RM  = rm -f
 MAKEDEPEND = makedepend
 
-CFLAGS    = -O3 
-GFLAGS    = -Wall -O3 -std=c99
+CFLAGS    = -fast
+GFLAGS    = -Wall -std=c99
 CXXFLAGS  = $(CFLAGS)
 LDFLAGS   = 
 

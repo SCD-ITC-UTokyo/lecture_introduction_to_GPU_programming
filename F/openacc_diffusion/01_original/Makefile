@@ -1,7 +1,7 @@
 F90  = nvfortran
 RM  = rm -f
 
-FFLAGS    = -O3 -mp 
+FFLAGS    = -fast -mp 
 LDFLAGS   = 
 
 SRCS   = misc.f90 diffusion.f90 main.f90

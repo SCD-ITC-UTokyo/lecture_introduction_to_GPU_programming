@@ -5,7 +5,7 @@ contains
 
   subroutine calc(nx, ny, a, b, c)
     implicit none
-    integer,intent(in) :: nx,ny
+    integer, intent(in)  :: nx,ny
     real(4), intent(in)  :: a(:,:), b(:,:)
     real(4), intent(out) :: c(:,:)
     integer :: i,j
@@ -20,8 +20,8 @@ contains
 
   subroutine init_cpu(nx, ny, a)
     implicit none
-    integer,intent(in) :: nx,ny
-    real(4),intent(out)  :: a(:,:)
+    integer ,intent(in)  :: nx,ny
+    real(4), intent(out) :: a(:,:)
     integer :: i,j
 
     do j = 1, ny
@@ -42,16 +42,14 @@ program main
   integer :: nt = 1000
   integer :: nx = 4096
   integer :: ny = 4096
-  real(4),allocatable :: a(:,:), b(:,:), c(:,:)
+  real(4), allocatable :: a(:,:), b(:,:), c(:,:)
   real(4) :: b0
   real(8) :: t_s, t_e, sum
   integer :: i,j,icnt
   
-  allocate(a(nx,ny),b(nx,ny),c(nx,ny))
+  allocate(a(nx,ny), b(nx,ny), c(nx,ny))
 
   b0 = 2.0
-
-  t_s = omp_get_wtime()
 
   !**** Begin ****!
     
@@ -64,6 +62,8 @@ program main
   end do
 
   c(:,:) = 0.0
+
+  t_s = omp_get_wtime()
 
   do icnt = 1,nt
      call calc(nx, ny, a, b, c)
@@ -79,8 +79,8 @@ program main
   !**** End ****!
     
   t_e = omp_get_wtime()
-  print *, "mean =", sum/(nx*ny)
-  print *, "Time =", t_e-t_s
+  write(*,*) "mean =", sum/(nx*ny)
+  write(*,*) "Time =", t_e-t_s
 
   deallocate(a,b,c)
 

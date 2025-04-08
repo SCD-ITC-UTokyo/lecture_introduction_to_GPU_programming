@@ -3,20 +3,23 @@
 #include <stdbool.h>
 #include <sys/time.h>
 #include <math.h>
+#include <unistd.h>
 #include "config.h"
 #include "setup.h"
 #include "fdtd2d.h"
 #include "fdtd2d_sources.h"
-#include "output.h"
 
 void set_object_er(const struct Range *whole,
                    FLOAT lx, FLOAT ly, FLOAT dx, FLOAT dy, int *obj, FLOAT *er);
 double get_elapsed_time(const struct timeval *tv0, const struct timeval *tv1);
 FLOAT get_dt(FLOAT dx, FLOAT dy);    
+void write_result(FILE *output_file, const int length,
+               const FLOAT *ex, const FLOAT *ey, const FLOAT *hz);
 
 int main(int argc, char *argv[])
 {
 
+    const int rank_root  = 0;
     int nprocs = 1;
     int rank   = 0;
 
@@ -69,6 +72,8 @@ int main(int argc, char *argv[])
     const int  nt          = atoi(argv[4]);
     const int  nout        = atoi(argv[5]);
     const bool output_file = nout <= 0 ? false : true;
+    
+    FILE *output_fid;
 
     if (rank == 0) {
         fprintf(stdout, "Calculation condition\n");
@@ -164,7 +169,6 @@ int main(int argc, char *argv[])
 
     if (output_file) {
         
-        const int rank_root  = 0;
         const int sendnelems = whole.length[0] * inside.length[1];
         const int src        = whole.length[0] * (inside.begin[1] - whole.begin[1]);
         const int dst        = whole.length[0] * (inside.begin[1] - whole.begin[1]);
@@ -177,7 +181,8 @@ int main(int argc, char *argv[])
 	}
     
         if (rank == rank_root) {
-            write_bmp(icnt, time, whole_global.length, dx, dy, ex_global, ey_global, hz_global);
+            output_fid = fopen("result.grd", "wb");
+            write_result(output_fid, whole_global.length[0]*whole_global.length[1], ex_global, ey_global, hz_global);
         }
     }
 
@@ -214,7 +219,6 @@ int main(int argc, char *argv[])
         
         if (output_file && icnt % nout == 0) {
 
-            const int rank_root  = 0;
             const int sendnelems = whole.length[0] * inside.length[1];
             const int src        = whole.length[0] * (inside.begin[1] - whole.begin[1]);
             const int dst        = whole.length[0] * (inside.begin[1] - whole.begin[1]);
@@ -227,11 +231,13 @@ int main(int argc, char *argv[])
 	    }
 
             if (rank == rank_root) {
-                write_bmp(icnt, time, whole_global.length, dx, dy, ex_global, ey_global, hz_global);
+               write_result(output_fid, whole_global.length[0]*whole_global.length[1], ex_global, ey_global, hz_global);
             }
             
         }
     }
+    
+    if ( output_file && rank == rank_root ) fclose(output_fid);
             
     gettimeofday(&tv1, NULL);
     
@@ -331,5 +337,13 @@ double get_elapsed_time(const struct timeval *tv0, const struct timeval *tv1)
     return (double)(tv1->tv_sec - tv0->tv_sec) + (double)(tv1->tv_usec - tv0->tv_usec)*1.0e-6;
 }
 
+
+void write_result(FILE *output_file, const int length,
+               const FLOAT *ex, const FLOAT *ey, const FLOAT *hz)
+{
+    fwrite(ex, sizeof(FLOAT), length, output_file);
+    fwrite(ey, sizeof(FLOAT), length, output_file);
+    fwrite(hz, sizeof(FLOAT), length, output_file);
+}
 
 
