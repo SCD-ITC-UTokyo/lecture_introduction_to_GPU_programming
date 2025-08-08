@@ -11,9 +11,7 @@ contains
     integer :: i,j
     
     !$acc kernels present(a, b, c)
-    !$acc loop independent
     do j = 1,ny
-       !$acc loop independent
        do i = 1,nx
           c(i,j) = c(i,j) + a(i,j) + b(i,j)
        end do
@@ -62,9 +60,7 @@ program main
   !$acc data copyin(a) create(b, c)
 
   !$acc kernels present(b)
-  !$acc loop independent
   do j = 1,ny
-     !$acc loop independent
      do i = 1,nx
         b(i,j) = b0
      end do

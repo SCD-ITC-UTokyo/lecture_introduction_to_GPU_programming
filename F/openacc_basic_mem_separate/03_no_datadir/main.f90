@@ -11,9 +11,7 @@ contains
     integer :: i,j
     
     !$acc kernels
-    !$acc loop independent
     do j = 1,ny
-       !$acc loop independent
        do i = 1,nx
           c(i,j) = c(i,j) + a(i,j) + b(i,j)
        end do
@@ -60,9 +58,7 @@ program main
   call init_cpu(nx, ny, a)
   
   !$acc kernels
-  !$acc loop independent
   do j = 1,ny
-     !$acc loop independent
      do i = 1,nx
         b(i,j) = b0
      end do
